@@ -17,7 +17,8 @@ class GreetingController{
     fun greeting(@RequestParam(value = "name", defaultValue = "World") name: String) =
         Greeting(counter.incrementAndGet(), "Hello, $name")
 
-    @GetMapping("/tasks")
-    fun getAllTags() =
+    // DEBUG ONLY
+    @GetMapping("/tags")
+    fun tasks() =
         tag_repos.findAll()
 }
