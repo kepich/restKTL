@@ -12,7 +12,7 @@ class Task(
     val name: String,
     val description: String,
     val task_date: Date,
-    @Column(nullable=false) val tag_id: Long,
+    @Column(nullable=false) val taguid: Long,
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = -1) {
     

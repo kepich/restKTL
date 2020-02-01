@@ -8,4 +8,5 @@ import com.restful.rest.model.Task
 @Repository
 interface TaskRepository : CrudRepository<Task, Long>{
     fun findByName(name: String): Iterable<Task>
+    fun findByTaguid(taguid: Long): Iterable<Task>
 }
