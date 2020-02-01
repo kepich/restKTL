@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.stereotype.Controller
 
 import org.springframework.beans.factory.annotation.Autowired
+
+import org.springframework.ui.Model
 
 import java.util.Optional
 
@@ -23,7 +25,7 @@ import com.restful.rest.response.TagResponse
 import com.restful.rest.exceptions.NotFoundException
 import com.restful.rest.exceptions.DuplicateEntryException
 
-@RestController
+@Controller
 @RequestMapping("tag")
 class TagController{
     @Autowired
@@ -56,7 +58,10 @@ class TagController{
 
     // Debug only ***********************
     @GetMapping("all")
-    fun all_tags() = tag_repos.findAll()
+    fun all_tags(model: Model): String{
+        model.addAttribute("tags", tag_repos.findAll())
+        return "tags"
+    }
     //***********************************
 
     @GetMapping("{id}")
