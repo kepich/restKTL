@@ -2,6 +2,7 @@ package com.restful.rest.controllers
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.PathVariable
@@ -45,6 +46,15 @@ class TaskController{
         var new_task: Task = Task(name=task.name, description=task.description, task_date=task.task_date, taguid=task.taguid, id=id)
 
         return task_repos.save(new_task)
+    }
+
+    @DeleteMapping("{id}")
+    fun task_delete(@PathVariable id: Long){
+        var temp: Optional<Task> = task_repos.findById(id)
+        if (!temp.isPresent()){
+            throw NotFoundException("Object Task with id: $id not found")
+        }
+        task_repos.delete(temp.get())
     }
 
 }
