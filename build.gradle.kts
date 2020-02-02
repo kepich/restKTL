@@ -6,6 +6,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	kotlin("jvm") version "1.3.61"
 	kotlin("plugin.spring") version "1.3.61"
+	id ("com.google.cloud.tools.jib") version "1.8.0"
 }
 
 group = "com.restful"
@@ -30,6 +31,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
+	testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.3")
+    testImplementation("io.kotlintest:kotlintest-extensions-spring:3.3.3")
+	testImplementation("junit:junit:4.12")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 tasks.withType<Test> {
