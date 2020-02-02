@@ -52,12 +52,13 @@ class TaskController{
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     fun task_delete(@PathVariable id: Long){
         var temp: Optional<Task> = task_repos.findById(id)
         if (!temp.isPresent()){
             throw NotFoundException("Object Task with id: $id not found")
         }
-        task_repos.delete(temp.get())
+        task_repos.deleteById(id)
     }
 
 }
