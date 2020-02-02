@@ -5,6 +5,7 @@
 <table>
 <#list tasks as task>
     <tr>
+    <td>${task.id}</td>
     <td>${task.name}</td>
     <td>${task.description}</td>
     <td>${task.task_date}</td>

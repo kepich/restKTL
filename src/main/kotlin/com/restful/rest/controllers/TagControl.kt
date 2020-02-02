@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.ResponseStatus
+
 import org.springframework.stereotype.Controller
+
+import org.springframework.http.HttpStatus
 
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -35,25 +39,24 @@ class TagController{
 
     
     @PostMapping()
-    fun tag_create(@RequestBody tag: Tag): Tag{
+    @ResponseStatus(HttpStatus.OK)
+    fun tag_create(@RequestBody tag: Tag){
         var temp: Iterable<Tag> = tag_repos.findByTitle(tag.title)
         if (temp.count() != 0){
             var title_created: String = tag.title
             throw DuplicateEntryException("Object Tag with title: $title_created already created")
         }
-        return tag_repos.save(tag)
+        tag_repos.save(tag)
     }
 
     @PostMapping("{id}")
-    fun tag_update(@PathVariable id: Long, @RequestBody tag: Tag): Tag{
+    @ResponseStatus(HttpStatus.OK)
+    fun tag_update(@PathVariable id: Long, @RequestBody tag: Tag){
         var temp: Optional<Tag> = tag_repos.findById(id)
         if (!temp.isPresent()){
             throw NotFoundException("Object Tag with tag: $id not found")
         }
-        temp.get()
-        var new_tag: Tag = Tag(title=tag.title, id=id)
-
-        return tag_repos.save(new_tag)
+        tag_repos.save(Tag(title=tag.title, id=id))
     }
 
     // Debug only ***********************
@@ -65,22 +68,24 @@ class TagController{
     //***********************************
 
     @GetMapping("{id}")
-    fun get_one_by_id(@PathVariable id: Long): TagResponse{
+    fun get_one_by_id(@PathVariable id: Long, model: Model): String{
         var temp: Optional<Tag> = tag_repos.findById(id)
         if (!temp.isPresent())
             throw NotFoundException("Object Tag with tag: $id not found")
         
         var tag_with_tasks: TagResponse = TagResponse(temp.get(), task_repos.findByTaguid(id))
-        return tag_with_tasks
+        model.addAttribute("tag_resp", tag_with_tasks)
+        return "tag"
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     fun tag_delete(@PathVariable id: Long){
         var temp: Optional<Tag> = tag_repos.findById(id)
         if (!temp.isPresent()){
             throw NotFoundException("Object Tag with id: $id not found")
         }
-        tag_repos.delete(temp.get())
+        tag_repos.deleteById(id)
 
         task_repos.deleteAll(task_repos.findByTaguid(id))
     }

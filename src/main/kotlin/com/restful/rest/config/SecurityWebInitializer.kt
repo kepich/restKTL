@@ -1,0 +1,2 @@
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer
+open class SecurityWebInitializer: AbstractSecurityWebApplicationInitializer() {}
